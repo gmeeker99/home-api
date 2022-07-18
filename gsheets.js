@@ -1,22 +1,23 @@
 import * as dotenv from "dotenv"
 import { GoogleSpreadsheet } from "google-spreadsheet"
+import { format } from "date-fns"
 dotenv.config("./.env")
 
-const doc = new GoogleSpreadsheet(
-	"1QVIOKzeoU0WZ6yxdie8xRbMZulaY2r8Gnfn03Gv_SjI"
-)
-doc.useServiceAccountAuth({
-	client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-	private_key: process.env.GOOGLE_PRIVATE_KEY,
-})
-await doc.loadInfo() // loads document properties and worksheets
-
-export async function main() {
-	const habit1 = doc.sheetsByIndex[0]
-	habit1.setHeaderRow(["Timestamp", "Boolean"], 1)
+export async function main(gSheet) {
+	await gSheet.loadInfo()
+	// console.log(format(Date.now(), "yyyy-MM-dd HH:mm:ss"))
+	const habit1 = gSheet.sheetsByIndex[0]
 	const a = await habit1.getRows()
-	console.log(a)
-	const date = Date.now()
-	habit1.addRow([date.toString(), "test"])
+	await habit1.addRow(["Hello2"])
+}
 
+export function loadSheet(sheet) {
+	const doc = new GoogleSpreadsheet(
+		"1QVIOKzeoU0WZ6yxdie8xRbMZulaY2r8Gnfn03Gv_SjI"
+	)
+	doc.useServiceAccountAuth({
+		client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+		private_key: process.env.GOOGLE_PRIVATE_KEY,
+	})
+	return doc
 }
