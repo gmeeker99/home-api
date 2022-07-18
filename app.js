@@ -8,8 +8,9 @@ app.get("/", (req, res) => {
 	res.send("Hello World!")
 })
 
-app.get("/sheets", (req, res) => {
-	res.send(main())
+app.get("/sheets", async (req, res) => {
+	main()
+	res.send("")
 })
 
 app.listen(port, () => {
