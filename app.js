@@ -1,5 +1,6 @@
 import express from "express"
-import { main, loadSheet } from "./gsheets.js"
+// import { main, loadSheet } from "./routes/google-sheet.js"
+import { router as googleSheets } from "./routes/google-sheet.js"
 
 const app = express()
 app.set("title", "home-api")
@@ -12,11 +13,7 @@ app.get("/", (req, res) => {
 	console.log(req.reqTime, req.ip)
 })
 
-app.get("/sheets", async (req, res) => {
-	const gSheet = loadSheet(req.query.sheet)
-	main(gSheet)
-	res.send("")
-})
+app.use("/sheets", googleSheets)
 
 function generalLog(req, res, next) {
 	req.reqTime = Date.now()
